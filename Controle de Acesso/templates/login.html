@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css')}}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+</head>
+
+
+<body id="cor">
+
+    <section id="home"> <!--INICIO DO CONTAINER DE LOGIN-->
+        <div class="container login-container">
+            <div class="login-box">
+                <!-- Adicionando a logo centralizada -->
+                <div class="text-center mb-4">
+                    <img src="/static/imagens/logo-official.png" width="120">
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label for="nome_usuario" class="text-white">Usuário</label>
+                        <input type="text" id="nome_usuario" name="nome_usuario" class="form-control cor-cinza"
+                            required>
+                    </div>
+                    <div>
+                        <label for="senha_usuario" class="text-white">Senha</label>
+                        <input type="password" id="senha_usuario" name="senha_usuario" class="form-control cor-cinza"
+                            required>
+                    </div>
+                    <br>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-xg px-5">Entrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </section><!--FINAL DO CONTAINER DE LOGIN-->
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const nome_usuario = document.getElementById('nome_usuario').value;
+            const senha_usuario = document.getElementById('senha_usuario').value;
+
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome_usuario, senha_usuario })
+            });
+            const result = await response.json();
+            document.getElementById('message').textContent = result.message;
+            if (response.ok) {
+                window.location.href = result.redirect_url;
+            }
+        });
+    </script>
+</body>
+
+</html>

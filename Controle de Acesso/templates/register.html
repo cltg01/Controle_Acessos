@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Registro de Usuário</h1>
+        <form id="register-form" method="post">
+            <label for="nome_usuario">Nome de Usuário:</label>
+            <input type="text" id="nome_usuario" name="nome_usuario" required>
+            
+            <label for="senha_usuario">Senha:</label>
+            <input type="password" id="senha_usuario" name="senha_usuario" required>
+            
+            <button type="submit">Registrar</button>
+        </form>
+        <div id="message"></div>
+
+
+        <h2>Lista de Usuários</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome de Usuário</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.getElementById('register-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const nome_usuario = document.getElementById('nome_usuario').value;
+            const senha_usuario = document.getElementById('senha_usuario').value;
+
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome_usuario, senha_usuario })
+            });
+            const result = await response.json();
+            document.getElementById('message').textContent = result.message;
+            if (response.ok) {
+                window.location.href = result.redirect_url;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+teste.php
+error_log
+.vscode/
+vendor/
+log.txt
+configemail.php
+src/config.php
